@@ -8,12 +8,6 @@ load_dotenv()
 class RAG_Retrieval:
     def __init__(self, persist_dir: str = "./vector_db", embedding_model: str = "all-MiniLM-L6-v2", llm_model: str = "llama3-8b-8192"):
         self.vectorstore =VectorStore(persist_dir, embedding_model)
-        client = chromadb.PersistentClient(
-            path="./chroma_db",
-            settings=chromadb.Settings(
-                anonymized_telemetry=False
-            )
-        )
         groq_api_key = ""
         self.llm = ChatGroq(groq_api_key=groq_api_key, model_name=llm_model)
         print(f"[INFO] Groq LLM initialized: {llm_model}")

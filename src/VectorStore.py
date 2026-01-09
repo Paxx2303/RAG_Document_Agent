@@ -2,7 +2,7 @@ import os
 from typing import List, Any
 import numpy as np
 import chromadb
-from chromadb.config import Settings
+from chromadb.config import *
 from sentence_transformers import SentenceTransformer
 from uuid import uuid4
 
@@ -20,7 +20,7 @@ class VectorStore:
         self.embedding_model_name = embedding_model
         self.embedding_model = SentenceTransformer(embedding_model)
 
-        self.client = chromadb.Client(
+        self.client =  chromadb.PersistentClient(
             Settings(
                 persist_directory=persist_dir,
                 anonymized_telemetry=False
