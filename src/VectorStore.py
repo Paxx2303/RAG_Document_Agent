@@ -21,8 +21,8 @@ class VectorStore:
         self.embedding_model = SentenceTransformer(embedding_model)
 
         self.client =  chromadb.PersistentClient(
-            Settings(
-                persist_directory=persist_dir,
+            path =persist_dir,
+            settings=Settings(
                 anonymized_telemetry=False
             )
         )
@@ -79,7 +79,7 @@ class VectorStore:
         results = self.collection.query(
             query_embeddings=query_embedding,
             n_results=top_k,
-            include=["documents", "metadatas", "distances", "ids"]
+            include=["documents", "metadatas", "distances"]
         )
 
         return results

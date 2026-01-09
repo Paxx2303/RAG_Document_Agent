@@ -14,14 +14,26 @@ class RAG_Retrieval:
 
     def search_and_summarize(self, query: str, top_k: int = 5) -> str:
         results = self.vectorstore.query(query, top_k=top_k)
-        texts = [r["metadata"].get("text", "") for r in results if r["metadata"]]
-        context = "\n\n".join(texts)
-        if not context:
+        docs = results["documents"][0]
+        metas = results["metadatas"][0]
+        texts = [
+            doc
+            for doc, meta in zip(docs, metas)
+            if meta is not None
+        ]
+        if not texts:
             return "No relevant documents found."
-        prompt = f"""Summarize the following context for the query: '{query}'\n\nContext:\n{context}\n\nSummary:"""
-        response = self.llm.invoke([prompt])
+        context = "\n\n".join(texts)
+        prompt = f"""You are a technical documentation assistant.
+    Answer concisely using ONLY the context below.
+    Context:
+    {context}
+    Question:
+    {query}
+    Answer:
+    """
+        response = self.llm.invoke(prompt)
         return response.content
-
 # Example usage
 if __name__ == "__main__":
     rag_search = RAG_Retrieval()
