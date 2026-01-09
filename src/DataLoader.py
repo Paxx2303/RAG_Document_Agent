@@ -25,6 +25,18 @@ def load_all_documents(data_dir: str) -> List[Any]:
             documents.extend(loaded)
         except Exception as e:
             print(f"[ERROR] Failed to load PDF {pdf_file}: {e}")
+    # MD files
+    md_files = list(data_path.glob('**/*.md'))
+    print(f"[DEBUG] Found {len(md_files)} MD files: {[str(f) for f in md_files]}")
+    for md_file in md_files:
+        print(f"[DEBUG] Loading MD: {md_file}")
+        try:
+            loader = TextLoader(str(md_file))
+            loaded = loader.load()
+            print(f"[DEBUG] Loaded {len(loaded)} MD docs from {md_file}")
+            documents.extend(loaded)
+        except Exception as e:
+            print(f"[ERROR] Failed to load MD {md_file}: {e}")
 
     # TXT files
     txt_files = list(data_path.glob('**/*.txt'))
