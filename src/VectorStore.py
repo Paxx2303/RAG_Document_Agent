@@ -35,7 +35,7 @@ class VectorStore:
         print(f"       Model: {embedding_model}")
         print(f"       Persist dir: {persist_dir}")
 
-    def add_documents(self, documents: List[Document], embeddings: np.ndarray):
+    def add_documents(self, documents: List[Any], embeddings: np.ndarray):
         "Add documents to the vector store"
         if not self.collection:
             raise ValueError("Collection not initialized")
